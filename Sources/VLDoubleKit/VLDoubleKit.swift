@@ -13,10 +13,11 @@ extension Double
   {
    nb = 0
   }
-  
+      
   if let suffix
   {
-   return String(format: "%.\(nb)f \(suffix)", self)
+   let escapedSuffix = suffix.replacingOccurrences(of: "%", with: "%%")
+   return String(format: "%.\(nb)f \(escapedSuffix)", self)
   }
   
   return String(format: "%.\(nb)f", self)
