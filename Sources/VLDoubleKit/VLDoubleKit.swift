@@ -5,22 +5,26 @@ extension Double
 {
  func formatted(decimals: Int = 2,
                 handleInteger: Bool = true,
-                suffix: String? = nil) -> String
+                suffix: String? = nil,
+                separator: String? = nil) -> String
  {
-  var nb: Int = decimals
-  
+  var value: String
   if handleInteger && self.truncatingRemainder(dividingBy: 1) == 0
   {
-   nb = 0
+   value = String(format: "%d", self)
   }
-      
+  else
+  {
+   let decimalSeparator: String = separator ?? Locale.current.decimalSeparator ?? "."
+   value = String(format: "%.\(decimals)f", self).replacingOccurrences(of: ".", with: decimalSeparator)
+  }
+
   if let suffix
   {
-   let escapedSuffix = suffix.replacingOccurrences(of: "%", with: "%%")
-   return String(format: "%.\(nb)f \(escapedSuffix)", self)
+   return "\(value) \(suffix)"
   }
-  
-  return String(format: "%.\(nb)f", self)
+
+  return value
  }
 
  @available(*, deprecated, renamed: "formatted(decimals:handleInteger:suffix:)")
