@@ -11,7 +11,7 @@ extension Double
   var value: String
   if handleInteger && self.truncatingRemainder(dividingBy: 1) == 0
   {
-   value = String(format: "%d", self)
+   value = String(format: "%.0f", self)
   }
   else
   {
