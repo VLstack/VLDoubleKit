@@ -1,7 +1,6 @@
 import Foundation
 
-public
-extension Double
+public extension Double
 {
  func formatted(decimals: Int = 2,
                 handleInteger: Bool = true,
@@ -68,5 +67,4 @@ extension Double
     
   return String(format: "%.\(nb)f kW", self)
  }
-
 }
