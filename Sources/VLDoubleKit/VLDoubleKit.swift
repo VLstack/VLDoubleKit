@@ -3,12 +3,12 @@ import Foundation
 public extension Double
 {
  func formatted(decimals: Int = 2,
-                handleInteger: Bool = true,
+                forceInteger: Bool = true,
                 suffix: String? = nil,
                 separator: String? = nil) -> String
  {
   var value: String
-  if handleInteger && self.truncatingRemainder(dividingBy: 1) == 0
+  if forceInteger && self.truncatingRemainder(dividingBy: 1) == 0
   {
    value = String(format: "%.0f", self)
   }
@@ -18,15 +18,24 @@ public extension Double
    value = String(format: "%.\(decimals)f", self).replacingOccurrences(of: ".", with: decimalSeparator)
   }
 
-  if let suffix
-  {
-   return "\(value) \(suffix)"
-  }
+  if let suffix { return "\(value) \(suffix)" }
 
   return value
  }
 
- @available(*, deprecated, renamed: "formatted(decimals:handleInteger:suffix:)")
+ @available(*, deprecated, message: "parameter handleInteger has been renamed to forceInteger")
+ func formatted(decimals: Int = 2,
+                handleInteger: Bool = true,
+                suffix: String? = nil,
+                separator: String? = nil) -> String
+ {
+  return self.formatted(decimals: decimals,
+                        forceInteger: handleInteger,
+                        suffix: suffix,
+                        separator: separator)
+ }
+
+ @available(*, deprecated, renamed: "formatted(decimals:forceInteger:suffix:)")
  func kmFormatted(decimals: Int = 2,
                   handleInteger: Bool = true) -> String
  {
@@ -40,7 +49,7 @@ public extension Double
   return String(format: "%.\(nb)f km", self)
  }
  
- @available(*, deprecated, renamed: "formatted(decimals:handleInteger:suffix:)")
+ @available(*, deprecated, renamed: "formatted(decimals:forceInteger:suffix:)")
  func percentFormatted(decimals: Int = 2,
                        handleInteger: Bool = true) -> String
  {
@@ -54,7 +63,7 @@ public extension Double
   return String(format: "%.\(nb)f %", self)
  }
  
- @available(*, deprecated, renamed: "formatted(decimals:handleInteger:suffix:)")
+ @available(*, deprecated, renamed: "formatted(decimals:forceInteger:suffix:)")
  func kwFormatted(decimals: Int = 2,
                   handleInteger: Bool = true) -> String
  {
