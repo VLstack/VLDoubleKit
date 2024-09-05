@@ -5,21 +5,26 @@ public extension Double
  func formatted(decimals: Int = 2,
                 allowInteger: Bool = false,
                 suffix: String? = nil,
-                separator: String? = nil) -> String
+                separator: String? = nil,
+                suffixPrefix: String = " ",
+                locale: Locale = .current) -> String
  {
-  let decimalSeparator: String = separator ?? Locale.current.decimalSeparator ?? "."
-  let nbDecimals: Int
-  if allowInteger && self.truncatingRemainder(dividingBy: 1) == 0
-  {
-   nbDecimals = 0
-  }
-  else
-  {
-   nbDecimals = max(0, decimals)
-  }
-  let value: String = String(format: "%.\(nbDecimals)f", self).replacingOccurrences(of: ".", with: decimalSeparator)
+  let decimalSeparator: String = separator ?? locale.decimalSeparator ?? "."
+  let isInteger: Bool = self.truncatingRemainder(dividingBy: 1) == 0
+  let nbDecimals: Int = allowInteger && isInteger ? 0 : max(0, decimals)
 
-  if let suffix { return "\(value) \(suffix)" }
+  var value: String = String(format: "%.\(nbDecimals)f", self).replacingOccurrences(of: ".", with: decimalSeparator)
+  
+  if allowInteger && nbDecimals > 0
+  {
+   let unnecessaryZeros = "\(decimalSeparator)\(String(repeating: "0", count: nbDecimals))"
+   if value.hasSuffix(unnecessaryZeros)
+   {
+    value = String(value.dropLast(unnecessaryZeros.count))
+   }
+  }
+
+  if let suffix { return "\(value)\(suffixPrefix)\(suffix)" }
 
   return value
  }
