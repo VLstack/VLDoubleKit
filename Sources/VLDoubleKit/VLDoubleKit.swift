@@ -1,13 +1,25 @@
 import Foundation
 
-public extension Double
+extension Double
 {
- func formatted(decimals: Int = 2,
-                allowInteger: Bool = false,
-                suffix: String? = nil,
-                separator: String? = nil,
-                suffixPrefix: String = " ",
-                locale: Locale = .current) -> String
+ // MARK: - Public API
+ /// Returns a formatted string representation of the double.
+ ///
+ /// - Parameters:
+ ///   - decimals: Number of decimal places to display (default: 2).
+ ///   - allowInteger: If true, suppresses decimals when the value is an integer (default: false).
+ ///   - suffix: Optional string to append after the number (e.g. "kg", "%").
+ ///   - separator: Decimal separator to use (default: locale's decimalSeparator or ".").
+ ///   - stringBeforeSuffix: String to place between the number and suffix (default: " ").
+ ///   - locale: Locale to use for the decimal separator (default: `.current`).
+ /// - Returns: Formatted string representation of the double, with optional suffix.
+ @inlinable
+ public func formatted(decimals: Int = 2,
+                       allowInteger: Bool = false,
+                       suffix: String? = nil,
+                       separator: String? = nil,
+                       stringBeforeSuffix: String = " ",
+                       locale: Locale = .current) -> String
  {
   let decimalSeparator: String = separator ?? locale.decimalSeparator ?? "."
   let isInteger: Bool = self.truncatingRemainder(dividingBy: 1) == 0
@@ -24,8 +36,25 @@ public extension Double
    }
   }
 
-  if let suffix { return "\(value)\(suffixPrefix)\(suffix)" }
+  if let suffix { return "\(value)\(stringBeforeSuffix)\(suffix)" }
 
   return value
+ }
+
+ // MARK: - Deprecated API
+ @available(*, deprecated, renamed: "formatted(decimals:allowInteger:suffix:separator:stringBeforeSuffix:locale:)")
+ public func formatted(decimals: Int,
+                       allowInteger: Bool,
+                       suffix: String?,
+                       separator: String?,
+                       suffixPrefix: String,
+                       locale: Locale) -> String
+ {
+  self.formatted(decimals: decimals,
+                 allowInteger: allowInteger,
+                 suffix: suffix,
+                 separator: separator,
+                 stringBeforeSuffix: suffixPrefix,
+                 locale: locale)
  }
 }

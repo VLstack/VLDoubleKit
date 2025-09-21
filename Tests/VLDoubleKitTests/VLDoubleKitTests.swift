@@ -2,7 +2,6 @@ import XCTest
 @testable import VLDoubleKit
 
 // TODO: add "locale" tests
-// TODO: add convertion from °C to °F which can give weird results (120°C == 248°F)
 final class VLDoubleKitTests: XCTestCase
 {
  func testFormatted_parameters_default() throws
@@ -94,7 +93,7 @@ final class VLDoubleKitTests: XCTestCase
 
   let value: Double = 25
   let expected: String = "25\(separator)00€"
-  let result: String = value.formatted(suffix: "€", suffixPrefix: "")
+  let result: String = value.formatted(suffix: "€", stringBeforeSuffix: "")
   XCTAssert(result == expected, "\(result) is not equal to expected \(expected)")
  }
 }
